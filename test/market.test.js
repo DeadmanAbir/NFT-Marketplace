@@ -27,18 +27,24 @@ const developmentChains = ["hardhat", "localhost"];
 
         basicNft= await ethers.getContract("BasicNft", deployer);
         // basicNft=await nftInstance.connect(deployer);
-        (await basicNft.mintNft()).wait(1);
+        await basicNft.mintNft();
 
         await basicNft.setApproval(instance.address, TOKEN_ID);
     })
 
     describe("list Items", ()=>{
         it("SHould emit event after listing an NFT", async()=>{
-            const tx=await instance.listNft(basicNft.address, TOKEN_ID, PRICE);
+            /* const tx=await instance.listNft(basicNft.address, TOKEN_ID, PRICE);
+            
+            
 
             await tx.wait(1);
 
-            expect(tx).to.emit("itemListed");
+            expect(tx).to.emit("itemListed"); */
+            
+            expect(await nftMarketplace.listItem(basicNft.address, TOKEN_ID, PRICE)).to.emit(
+                      "itemListed"
+                  );
         })
     })
 
